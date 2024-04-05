@@ -1,0 +1,38 @@
+name: Deploy PR to GitHub Pages
+
+on:
+  pull_request:
+    types: [opened, synchronize, closed]
+    branches:
+      - '*'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Project
+        run: npm run build
+
+      - name: Get Branch Name
+        id: get_branch
+        run: echo "BRANCH_NAME=$(echo ${GITHUB_HEAD_REF##*/})" >> $GITHUB_ENV
+
+      - name: Deploy to GitHub Pages
+        if: github.event.action != 'closed'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.PR_TOKEN }}
+          publish_dir: ./dist
+          destination_dir: ${{ env.BRANCH_NAME }}
