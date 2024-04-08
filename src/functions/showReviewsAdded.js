@@ -1,6 +1,7 @@
 const $ = require('jquery');
 const DataStorage = require('../classes/Storage.class');
 const GHPage = require('../classes/GHPage.class');
+const { getPRId, getTaskSlug } = require('../helpers');
 
 function showReviewsAdded() {
   const page = new GHPage();
@@ -20,15 +21,20 @@ function showReviewsAdded() {
     }
 
     const pageUrl = $PRLink.attr('href');
-    const taskSlug = pageUrl
-      .split('/mate-academy/')
-      .slice(-1)[0]
-      .split('/pull/')[0];
+    const taskSlug = getTaskSlug(pageUrl);
+    const pullRequestId = getPRId(pageUrl);
 
-    const reviewsIds = storage.getReviewsIds(taskSlug, pageUrl);
+    const reviewsIds = storage.getReviewsIds(taskSlug, pullRequestId);
 
     const reviewsAdded = reviewsIds.length;
-    const $reviewsAdded = $(`<span class="reviews-added">Reviews added: ${reviewsAdded}</span>`);
+
+    if (!reviewsAdded) {
+      return;
+    }
+
+    const $reviewsAdded = $(`
+      <span class="reviews-added ml-1 mr-1"> --> Reviews added: ${reviewsAdded}</span>
+    `);
 
     $PRLink.after($reviewsAdded);
   });

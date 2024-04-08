@@ -2,6 +2,7 @@ const $ = require('jquery');
 const GHPage = require('./classes/GHPage.class');
 const addButtonsToReviews = require('./functions/addButtonsToReviews');
 const showReviewsAdded = require('./functions/showReviewsAdded');
+const addCopyAndClear = require('./functions/addCopyAndClear');
 
 $(() => {
   setInterval(() => {
@@ -15,6 +16,7 @@ $(() => {
 
       case /\/mate-academy\/[^/]+\/pulls/.test(pageUrl):
         showReviewsAdded();
+        addCopyAndClear();
         break;
 
       default:

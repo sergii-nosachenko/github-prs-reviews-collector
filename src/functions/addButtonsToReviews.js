@@ -4,6 +4,7 @@ const ReviewItem = require('../classes/ReviewItem.class');
 const ActionButton = require('../classes/ActionButton.class');
 const DataStorage = require('../classes/Storage.class');
 const GHPage = require('../classes/GHPage.class');
+const { getTaskSlug, getPRId } = require('../helpers');
 
 function addButtonsToReviews() {
   const page = new PRPage();
@@ -25,12 +26,10 @@ function addButtonsToReviews() {
 
     const reviewId = Number($review.attr('id').replace('pullrequestreview-', ''));
     const pageUrl = GHPage.linkToPage();
-    const taskSlug = pageUrl
-      .split('/mate-academy/')
-      .slice(-1)[0]
-      .split('/pull/')[0];
+    const taskSlug = getTaskSlug(pageUrl);
+    const pullRequestId = getPRId(pageUrl);
 
-    const reviewsIds = storage.getReviewsIds(taskSlug, pageUrl);
+    const reviewsIds = storage.getReviewsIds(taskSlug, pullRequestId);
 
     const isReviewAdded = reviewsIds.includes(reviewId);
     const action = isReviewAdded ? 'remove' : 'add';
@@ -50,7 +49,7 @@ function addButtonsToReviews() {
 
       const currentAction = actionButton.action;
 
-      storage.updateReviewsIds(taskSlug, pageUrl, reviewId, currentAction);
+      storage.updateReviewsIds(taskSlug, pullRequestId, reviewId, currentAction);
 
       actionButton.action = currentAction === 'add'
         ? 'remove'

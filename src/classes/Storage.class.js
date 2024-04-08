@@ -1,7 +1,7 @@
 /**
  * {
  *   [taskSlug]: {
- *     [pullRequestUrl]: [reviewId1, reviewId2, ...],
+ *     [pullRequestId]: [reviewId1, reviewId2, ...],
  *     ...
  *   },
  *   ...
@@ -40,24 +40,24 @@ class DataStorage {
       : {};
   }
 
-  getReviewsIds(taskSlug, pageUrl) {
+  getReviewsIds(taskSlug, pullRequestId) {
     const storageData = this.getData(taskSlug);
 
-    return storageData[pageUrl] ?? [];
+    return storageData[pullRequestId] ?? [];
   }
 
-  updateReviewsIds(taskSlug, pageUrl, reviewId, action) {
+  updateReviewsIds(taskSlug, pullRequestId, reviewId, action) {
     const storageData = this.getData(taskSlug);
 
-    const reviewsIds = storageData[pageUrl] ?? [];
+    const reviewsIds = storageData[pullRequestId] ?? [];
     const updatedReviewsIds = action === 'add'
       ? [...reviewsIds, reviewId]
       : reviewsIds.filter((id) => id !== reviewId);
 
     if (!updatedReviewsIds.length) {
-      delete storageData[pageUrl];
+      delete storageData[pullRequestId];
     } else {
-      storageData[pageUrl] = updatedReviewsIds;
+      storageData[pullRequestId] = updatedReviewsIds;
     }
 
     if (!Object.keys(storageData).length) {
