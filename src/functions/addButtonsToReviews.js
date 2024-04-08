@@ -63,7 +63,10 @@ function addButtonsToReviews() {
       </a>
     `;
 
-    reviewItem.$itemBody.children().eq(0).prepend(button);
+    reviewItem.$itemBody
+      .children()
+      .eq(0)
+      .prepend(button);
   });
 }
 
