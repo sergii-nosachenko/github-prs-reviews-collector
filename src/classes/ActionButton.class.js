@@ -31,7 +31,7 @@ class ActionButton {
   get buttonHTML() {
     return `
       <a 
-        href="#"
+        href="/"
         data-review-id="${this.reviewId}"
         data-action="${this.action}"
         data-view-component="true" 

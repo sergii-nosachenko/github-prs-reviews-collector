@@ -2,9 +2,11 @@ const $ = require('jquery');
 const PRPage = require('../classes/PRPage.class');
 const ReviewItem = require('../classes/ReviewItem.class');
 const ActionButton = require('../classes/ActionButton.class');
+const DataStorage = require('../classes/Storage.class');
 
 function addButtonsToReviews() {
   const page = new PRPage();
+  const storage = new DataStorage();
 
   const reviews = page.$reviews;
 
@@ -27,23 +29,7 @@ function addButtonsToReviews() {
       .slice(-1)[0]
       .split('/pull/')[0];
 
-    /**
-     * {
-     *   [taskSlug]: {
-     *     [pullRequestUrl]: [reviewId1, reviewId2, ...],
-     *     ...
-     *   },
-     *   ...
-     * }
-     */
-    const storageRecord = localStorage.getItem(taskSlug);
-    const storageData = storageRecord
-      ? JSON.parse(storageRecord)
-      : {};
-
-    console.log('storageData init', storageData);
-
-    const reviewsIds = storageData[pageUrl] ?? [];
+    const reviewsIds = storage.getReviewsIds(taskSlug, pageUrl);
 
     const isReviewAdded = reviewsIds.includes(reviewId);
     const action = isReviewAdded ? 'remove' : 'add';
@@ -58,22 +44,19 @@ function addButtonsToReviews() {
       .eq(1)
       .prepend(actionButton.buttonElement);
 
-    actionButton.$button.on('click', () => {
+    actionButton.$button.on('click', (e) => {
+      e.preventDefault();
+
       const currentAction = actionButton.action;
 
-      if (currentAction === 'add') {
-        storageData[pageUrl] = [...reviewsIds, reviewId];
-      } else {
-        storageData[pageUrl] = reviewsIds.filter((id) => id !== reviewId);
-      }
+      storage.updateReviewsIds(taskSlug, pageUrl, reviewId, currentAction);
 
-      console.log('storageData upd', storageData);
-
-      localStorage
-        .setItem(taskSlug, JSON.stringify(storageData));
-
-      actionButton.action = currentAction === 'add' ? 'remove' : 'add';
+      actionButton.action = currentAction === 'add'
+        ? 'remove'
+        : 'add';
       actionButton.updateLabel();
+
+      console.log('Updated storage:', storage.getData(taskSlug));
     });
   });
 }
