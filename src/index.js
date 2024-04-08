@@ -4,19 +4,21 @@ const GHPage = require('./classes/GHPage.class');
 const showReviewsAdded = require('./functions/showReviewsAdded');
 
 $(() => {
-  const pageUrl = GHPage.linkToPage();
-  console.log('Current page:', pageUrl);
+  setInterval(() => {
+    const pageUrl = GHPage.linkToPage();
+    console.log('Current page:', pageUrl);
 
-  switch (true) {
-    case /\/mate-academy\/[^/]+\/pull\//.test(pageUrl):
-      addButtonsToReviews();
-      break;
+    switch (true) {
+      case /\/mate-academy\/[^/]+\/pull\//.test(pageUrl):
+        addButtonsToReviews();
+        break;
 
-    case /\/mate-academy\/[^/]+\/pulls/.test(pageUrl):
-      showReviewsAdded();
-      break;
+      case /\/mate-academy\/[^/]+\/pulls/.test(pageUrl):
+        showReviewsAdded();
+        break;
 
-    default:
-      console.log('Skipping the page.');
-  }
+      default:
+        console.log('Skipping the page.');
+    }
+  }, 1000);
 });
