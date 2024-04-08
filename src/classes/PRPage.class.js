@@ -12,6 +12,4 @@ class PRPage {
   }
 }
 
-PRPage.linkToPage = () => window.location.href;
-
 module.exports = PRPage;

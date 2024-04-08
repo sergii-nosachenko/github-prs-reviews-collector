@@ -54,9 +54,17 @@ class DataStorage {
       ? [...reviewsIds, reviewId]
       : reviewsIds.filter((id) => id !== reviewId);
 
-    storageData[pageUrl] = updatedReviewsIds;
+    if (!updatedReviewsIds.length) {
+      delete storageData[pageUrl];
+    } else {
+      storageData[pageUrl] = updatedReviewsIds;
+    }
 
-    this.setRecord(taskSlug, JSON.stringify(storageData));
+    if (!Object.keys(storageData).length) {
+      this.removeRecord(taskSlug);
+    } else {
+      this.setRecord(taskSlug, JSON.stringify(storageData));
+    }
   }
 }
 

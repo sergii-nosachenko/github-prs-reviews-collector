@@ -3,6 +3,7 @@ const PRPage = require('../classes/PRPage.class');
 const ReviewItem = require('../classes/ReviewItem.class');
 const ActionButton = require('../classes/ActionButton.class');
 const DataStorage = require('../classes/Storage.class');
+const GHPage = require('../classes/GHPage.class');
 
 function addButtonsToReviews() {
   const page = new PRPage();
@@ -23,7 +24,7 @@ function addButtonsToReviews() {
     }
 
     const reviewId = Number($review.attr('id').replace('pullrequestreview-', ''));
-    const pageUrl = PRPage.linkToPage();
+    const pageUrl = GHPage.linkToPage();
     const taskSlug = pageUrl
       .split('/mate-academy/')
       .slice(-1)[0]
@@ -55,8 +56,6 @@ function addButtonsToReviews() {
         ? 'remove'
         : 'add';
       actionButton.updateLabel();
-
-      console.log('Updated storage:', storage.getData(taskSlug));
     });
   });
 }
