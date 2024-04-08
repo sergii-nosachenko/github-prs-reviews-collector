@@ -13,6 +13,8 @@ function addCopyAndClear() {
 
   const records = storage.getData(taskSlug);
 
+  console.log('Records:', records);
+
   if (!Object.keys(records).length) {
     return;
   }
