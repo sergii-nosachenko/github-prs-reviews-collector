@@ -34,7 +34,7 @@ module.exports = {
             warnings: false,
             comparisons: false,
             inline: 2,
-            drop_console: true,
+            drop_console: false,
             drop_debugger: true,
             pure_funcs: ['console.info', 'console.debug', 'console.warn'],
           },
