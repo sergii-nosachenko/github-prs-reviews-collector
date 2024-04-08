@@ -12,11 +12,11 @@ $(() => {
     switch (true) {
       case /\/mate-academy\/[^/]+\/pull\//.test(pageUrl):
         addButtonsToReviews();
+        addCopyAndClear();
         break;
 
       case /\/mate-academy\/[^/]+\/pulls/.test(pageUrl):
         showReviewsAdded();
-        addCopyAndClear();
         break;
 
       default:
