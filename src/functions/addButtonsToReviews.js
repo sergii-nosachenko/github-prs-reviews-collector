@@ -20,7 +20,7 @@ function addButtonsToReviews() {
 
     console.log('reviewItem', reviewItem);
 
-    if (!reviewItem.$addOrRemoveReviewBtn.length) {
+    if (reviewItem.$addOrRemoveReviewBtn.length) {
       return;
     }
 
