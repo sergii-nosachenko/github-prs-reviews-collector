@@ -18,7 +18,7 @@ function addCopyAndClear() {
     return;
   }
 
-  if (!$(COPY_TO_CLIPBOARD_BTN_CLASS).length) {
+  if (!$(`.${COPY_TO_CLIPBOARD_BTN_CLASS}`).length) {
     const copyToClipboardBtn = new HeaderItem(
       page.$headerList,
       'Copy to clipboard',
@@ -38,7 +38,7 @@ function addCopyAndClear() {
     });
   }
 
-  if (!$(CLEAR_ALL_REVIEWS_BTN_CLASS).length) {
+  if (!$(`.${CLEAR_ALL_REVIEWS_BTN_CLASS}`).length) {
     const clearAllBtn = new HeaderItem(
       page.$headerList,
       'Clear task records',
