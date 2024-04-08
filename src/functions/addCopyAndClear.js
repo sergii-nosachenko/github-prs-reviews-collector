@@ -41,6 +41,8 @@ function addCopyAndClear() {
     });
 
     window.addEventListener('storage', (e) => {
+      console.log('Storage event:', e);
+
       if (e.key === 'data') {
         const data = JSON.parse(e.newValue);
 
