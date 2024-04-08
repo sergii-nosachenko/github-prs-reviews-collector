@@ -1,6 +1,6 @@
 const $ = require('jquery');
-const addButtonsToReviews = require('./functions/addButtonsToReviews');
 const GHPage = require('./classes/GHPage.class');
+const addButtonsToReviews = require('./functions/addButtonsToReviews');
 const showReviewsAdded = require('./functions/showReviewsAdded');
 
 $(() => {

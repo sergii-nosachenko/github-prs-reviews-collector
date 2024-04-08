@@ -13,7 +13,7 @@ function showReviewsAdded() {
 
   PRLinks.each(function addButton() {
     const $PRLink = $(this);
-    const reviewsAddedInfo = $PRLink.find('.reviews-added');
+    const reviewsAddedInfo = $PRLink.parent().find('.reviews-added');
 
     if (reviewsAddedInfo.length) {
       return;
