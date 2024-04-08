@@ -3,7 +3,7 @@ const $ = require('jquery');
 class PRPage {
   constructor() {
     this.selectors = {
-      reviews: '.js-comment[id^="pullrequestreview-"]',
+      reviews: '.js-comment[id^="pullrequestreview-"][data-channel]',
     };
   }
 

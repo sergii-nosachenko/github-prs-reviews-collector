@@ -49,7 +49,7 @@ function addButtonsToReviews() {
     const action = isReviewAdded ? 'remove' : 'add';
     const label = isReviewAdded ? 'Remove review from the list' : 'Add review to the list';
 
-    const button = `
+    const button = $(`
       <a 
         href="#"
         data-review-id="${reviewId}"
@@ -68,11 +68,14 @@ function addButtonsToReviews() {
             <span class="Button-label">${label}</span>
           </span>
       </a>
-    `;
+    `);
+
+    console.log('children', reviewItem.$itemBody.children());
+    console.log('children 1', reviewItem.$itemBody.children().eq(1));
 
     reviewItem.$itemBody
       .children()
-      .eq(0)
+      .eq(1)
       .prepend(button);
   });
 }
