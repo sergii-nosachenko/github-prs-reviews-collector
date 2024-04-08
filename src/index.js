@@ -3,6 +3,7 @@ const GHPage = require('./classes/GHPage.class');
 const addButtonsToReviews = require('./functions/addButtonsToReviews');
 const showReviewsAdded = require('./functions/showReviewsAdded');
 const addCopyAndClear = require('./functions/addCopyAndClear');
+const removeCopyAndClear = require('./functions/removeCopyAndClear');
 
 $(() => {
   setInterval(() => {
@@ -20,6 +21,7 @@ $(() => {
         break;
 
       default:
+        removeCopyAndClear();
         console.log('Skipping the page.');
     }
   }, 1000);

@@ -5,6 +5,25 @@ const { getTaskSlug } = require('../helpers');
 const HeaderItem = require('../classes/HeaderItem.class');
 const { COPY_TO_CLIPBOARD_BTN_CLASS, CLEAR_ALL_REVIEWS_BTN_CLASS } = require('../constants');
 
+function storageEventHandler(e, copyToClipboardBtn) {
+  console.log('Storage event:', e);
+
+  if (e.key === 'data') {
+    const data = JSON.parse(e.newValue);
+
+    const pageUrl = GHPage.linkToPage();
+    const taskSlug = getTaskSlug(pageUrl);
+
+    if (data && data[taskSlug]) {
+      const newRecords = data[taskSlug];
+      const newPRs = Object.keys(newRecords);
+      const newReviewsCount = newPRs.reduce((acc, pr) => acc + newRecords[pr].length, 0);
+
+      copyToClipboardBtn.updateLabel(`Copy to clipboard (${newReviewsCount})`);
+    }
+  }
+}
+
 function addCopyAndClear() {
   const page = new GHPage();
   const storage = new DataStorage();
@@ -40,21 +59,7 @@ function addCopyAndClear() {
       navigator.clipboard.writeText(textToCopy);
     });
 
-    window.addEventListener('storage', (e) => {
-      console.log('Storage event:', e);
-
-      if (e.key === 'data') {
-        const data = JSON.parse(e.newValue);
-
-        if (data && data[taskSlug]) {
-          const newRecords = data[taskSlug];
-          const newPRs = Object.keys(newRecords);
-          const newReviewsCount = newPRs.reduce((acc, pr) => acc + newRecords[pr].length, 0);
-
-          copyToClipboardBtn.updateLabel(`Copy to clipboard (${newReviewsCount})`);
-        }
-      }
-    });
+    window.addEventListener('storage', (e) => storageEventHandler(e, copyToClipboardBtn));
   }
 
   if (!$(`.${CLEAR_ALL_REVIEWS_BTN_CLASS}`).length) {
