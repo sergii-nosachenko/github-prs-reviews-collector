@@ -30,7 +30,9 @@ function addCopyAndClear() {
     copyToClipboardBtn.$item.on('click', (e) => {
       e.preventDefault();
 
-      const textToCopy = JSON.stringify(records);
+      const textToCopy = JSON.stringify({
+        [taskSlug]: records,
+      });
 
       navigator.clipboard.writeText(textToCopy);
     });
