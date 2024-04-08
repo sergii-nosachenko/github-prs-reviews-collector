@@ -16,10 +16,6 @@ function showReviewsAdded() {
     const $PRLink = $(this);
     const reviewsAddedInfo = $PRLink.parent().find('.reviews-added');
 
-    if (reviewsAddedInfo.length) {
-      return;
-    }
-
     const pageUrl = $PRLink.attr('href');
     const taskSlug = getTaskSlug(pageUrl);
     const pullRequestId = getPRId(pageUrl);
@@ -27,10 +23,21 @@ function showReviewsAdded() {
     const reviewsIds = storage.getReviewsIds(taskSlug, pullRequestId);
 
     const reviewsAdded = reviewsIds.length;
+    const prevReviewsAdded = reviewsAddedInfo.length
+      ? Number(reviewsAddedInfo.text().split(': ')[1])
+      : 0;
 
     if (!reviewsAdded) {
+      reviewsAddedInfo?.remove();
+
       return;
     }
+
+    if (prevReviewsAdded === reviewsAdded) {
+      return;
+    }
+
+    reviewsAddedInfo.remove();
 
     const $reviewsAdded = $(`
       <span class="reviews-added ml-1 mr-1"> --> Reviews added: ${reviewsAdded}</span>

@@ -18,10 +18,13 @@ function addCopyAndClear() {
     return;
   }
 
+  const PRs = Object.keys(records);
+  const reviewsCount = PRs.reduce((acc, pr) => acc + records[pr].length, 0);
+
   if (!$(`.${COPY_TO_CLIPBOARD_BTN_CLASS}`).length) {
     const copyToClipboardBtn = new HeaderItem(
       page.$headerList,
-      'Copy to clipboard',
+      `Copy to clipboard (${reviewsCount})`,
       COPY_TO_CLIPBOARD_BTN_CLASS,
     );
 
@@ -35,6 +38,20 @@ function addCopyAndClear() {
       });
 
       navigator.clipboard.writeText(textToCopy);
+    });
+
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'data') {
+        const data = JSON.parse(e.newValue);
+
+        if (data && data[taskSlug]) {
+          const newRecords = data[taskSlug];
+          const newPRs = Object.keys(newRecords);
+          const newReviewsCount = newPRs.reduce((acc, pr) => acc + newRecords[pr].length, 0);
+
+          copyToClipboardBtn.updateLabel(`Copy to clipboard (${newReviewsCount})`);
+        }
+      }
     });
   }
 

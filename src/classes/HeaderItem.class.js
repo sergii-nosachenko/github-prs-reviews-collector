@@ -34,6 +34,10 @@ class HeaderItem {
   get $item() {
     return $(this.$parent).find(`.${this.className}`);
   }
+
+  updateLabel(newLabel) {
+    this.$item.find('.AppHeader-context-item-label').text(newLabel);
+  }
 }
 
 module.exports = HeaderItem;
