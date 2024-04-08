@@ -8,6 +8,8 @@ function addButtonsToReviews() {
 
   const reviews = page.$reviews;
 
+  console.log('reviews', reviews);
+
   if (!reviews.length) {
     return;
   }
@@ -15,6 +17,8 @@ function addButtonsToReviews() {
   reviews.each(function addButton() {
     const $review = $(this);
     const reviewItem = new ReviewItem($review);
+
+    console.log('reviewItem', reviewItem);
 
     if (!reviewItem.$addOrRemoveReviewBtn.length) {
       return;
@@ -31,7 +35,10 @@ function addButtonsToReviews() {
       ? JSON.parse(storageRecord)
       : [];
 
-    const addedPR = storageData.find((pr) => pr.pullRequestUrl === pageUrl);
+    const addedPR = storageData.find((pr) => pr.pullRequestUrl === pageUrl) ?? {
+      pullRequestUrl: pageUrl,
+      reviewsIds: [],
+    };
 
     let isReviewAdded = false;
 
