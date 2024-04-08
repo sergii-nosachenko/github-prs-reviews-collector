@@ -1,14 +1,12 @@
 const $ = require('jquery');
 const PRPage = require('../classes/PRPage.class');
 const ReviewItem = require('../classes/ReviewItem.class');
-const { ADD_REMOVE_REVIEW_BTN_CLASS } = require('../constants');
+const ActionButton = require('../classes/ActionButton.class');
 
 function addButtonsToReviews() {
   const page = new PRPage();
 
   const reviews = page.$reviews;
-
-  console.log('reviews', reviews);
 
   if (!reviews.length) {
     return;
@@ -17,8 +15,6 @@ function addButtonsToReviews() {
   reviews.each(function addButton() {
     const $review = $(this);
     const reviewItem = new ReviewItem($review);
-
-    console.log('reviewItem', reviewItem);
 
     if (reviewItem.$addOrRemoveReviewBtn.length) {
       return;
@@ -30,53 +26,55 @@ function addButtonsToReviews() {
       .split('/mate-academy/')
       .slice(-1)[0]
       .split('/pull/')[0];
+
+    /**
+     * {
+     *   [taskSlug]: {
+     *     [pullRequestUrl]: [reviewId1, reviewId2, ...],
+     *     ...
+     *   },
+     *   ...
+     * }
+     */
     const storageRecord = localStorage.getItem(taskSlug);
     const storageData = storageRecord
       ? JSON.parse(storageRecord)
-      : [];
+      : {};
 
-    const addedPR = storageData.find((pr) => pr.pullRequestUrl === pageUrl) ?? {
-      pullRequestUrl: pageUrl,
-      reviewsIds: [],
-    };
+    console.log('storageData init', storageData);
 
-    let isReviewAdded = false;
+    const reviewsIds = storageData[pageUrl] ?? [];
 
-    if (addedPR) {
-      isReviewAdded = addedPR.reviewsIds.includes(reviewId);
-    }
-
+    const isReviewAdded = reviewsIds.includes(reviewId);
     const action = isReviewAdded ? 'remove' : 'add';
-    const label = isReviewAdded ? 'Remove review from the list' : 'Add review to the list';
-
-    const button = $(`
-      <a 
-        href="#"
-        data-review-id="${reviewId}"
-        data-action="${action}"
-        data-view-component="true" 
-        class="
-          ${ADD_REMOVE_REVIEW_BTN_CLASS}
-          Button--invisible 
-          Button--small 
-          Button 
-          Button--invisible-noVisuals 
-          ml-0 
-          ml-md-2
-        ">
-          <span class="Button-content">
-            <span class="Button-label">${label}</span>
-          </span>
-      </a>
-    `);
-
-    console.log('children', reviewItem.$itemBody.children());
-    console.log('children 1', reviewItem.$itemBody.children().eq(1));
+    const actionButton = new ActionButton(
+      $review,
+      reviewId,
+      action,
+    );
 
     reviewItem.$itemBody
       .children()
       .eq(1)
-      .prepend(button);
+      .prepend(actionButton.buttonElement);
+
+    actionButton.$button.on('click', () => {
+      const currentAction = actionButton.action;
+
+      if (currentAction === 'add') {
+        storageData[pageUrl] = [...reviewsIds, reviewId];
+      } else {
+        storageData[pageUrl] = reviewsIds.filter((id) => id !== reviewId);
+      }
+
+      console.log('storageData upd', storageData);
+
+      localStorage
+        .setItem(taskSlug, JSON.stringify(storageData));
+
+      actionButton.action = currentAction === 'add' ? 'remove' : 'add';
+      actionButton.updateLabel();
+    });
   });
 }
 
