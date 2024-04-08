@@ -11,6 +11,8 @@ function addCopyAndClear() {
   const pageUrl = GHPage.linkToPage();
   const taskSlug = getTaskSlug(pageUrl);
 
+  console.log('Task slug:', taskSlug);
+
   const records = storage.getData(taskSlug);
 
   console.log('Records:', records);
