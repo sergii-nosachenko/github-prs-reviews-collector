@@ -8,7 +8,6 @@ const removeCopyAndClear = require('./functions/removeCopyAndClear');
 $(() => {
   setInterval(() => {
     const pageUrl = GHPage.linkToPage();
-    console.log('Current page:', pageUrl);
 
     switch (true) {
       case /\/mate-academy\/[^/]+\/pull\//.test(pageUrl):
@@ -22,6 +21,7 @@ $(() => {
 
       default:
         removeCopyAndClear();
+        // eslint-disable-next-line no-console
         console.log('Skipping the page.');
     }
   }, 1000);
