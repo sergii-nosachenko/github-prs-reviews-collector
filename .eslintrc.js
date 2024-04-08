@@ -26,4 +26,7 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: [],
+  rules: {
+    'no-underscore-dangle': 'off',
+  },
 };

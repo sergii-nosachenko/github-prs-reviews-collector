@@ -14,6 +14,6 @@ jobs:
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.PR_TOKEN }}
-          repository: sergii-nosachenko/gud-food-good-ux
+          repository: sergii-nosachenko/github-prs-reviews-collector
           event-type: pr-cleanup
           client-payload: '{"ref": "${{ github.event.pull_request.head.ref }}"}'

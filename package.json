@@ -1,7 +1,7 @@
 {
-  "name": "gud-food-good-ux",
+  "name": "github-prs-reviews-collector",
   "version": "1.0.0",
-  "description": "Make gudfood ordering more comfortable",
+  "description": "Collects reviews from PRs on GitHub",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sergii-nosachenko/gud-food-good-ux.git"
+    "url": "git+https://github.com/sergii-nosachenko/github-prs-reviews-collector.git"
   },
   "author": "Sergii Nosachenko",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/sergii-nosachenko/gud-food-good-ux/issues"
+    "url": "https://github.com/sergii-nosachenko/github-prs-reviews-collector/issues"
   },
-  "homepage": "https://github.com/sergii-nosachenko/gud-food-good-ux#readme",
+  "homepage": "https://github.com/sergii-nosachenko/github-prs-reviews-collector#readme",
   "dependencies": {
     "@types/jquery": "^3.5.25",
     "jquery": "^3.7.1"
