@@ -55,6 +55,8 @@ function addCopyAndClear() {
       const updatedRecords = storage.getData(taskSlug);
       const updatedReviewsCount = PRs.reduce((acc, pr) => acc + updatedRecords[pr].length, 0);
 
+      console.log('updatedReviewsCount', updatedReviewsCount);
+
       copyToClipboardBtn.updateLabel(`Copy to clipboard (${updatedReviewsCount})`);
     });
   }
