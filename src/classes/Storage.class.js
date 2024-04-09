@@ -25,13 +25,13 @@ class DataStorage {
   setRecord(key, value) {
     this.storage.setItem(key, value);
 
-    this.dispatchEvent(STORAGE_EVENTS.ADD, { taskSlug: key, reviews: value });
+    DataStorage.dispatchEvent(STORAGE_EVENTS.ADD, { taskSlug: key, reviews: value });
   }
 
   removeRecord(key) {
     this.storage.removeItem(key);
 
-    this.dispatchEvent(STORAGE_EVENTS.REMOVE, { taskSlug: key });
+    DataStorage.dispatchEvent(STORAGE_EVENTS.REMOVE, { taskSlug: key });
   }
 
   clearStorage() {
@@ -76,38 +76,43 @@ class DataStorage {
       this.setRecord(taskSlug, JSON.stringify(storageData));
     }
   }
+}
 
-  addListener(events, callback) {
-    const eventsArray = Array.isArray(events) ? events : [events];
+DataStorage.listeners = {
+  [STORAGE_EVENTS.ADD]: [],
+  [STORAGE_EVENTS.REMOVE]: [],
+};
 
-    eventsArray.forEach((event) => {
-      switch (event) {
-        case STORAGE_EVENTS.ADD:
-        case STORAGE_EVENTS.REMOVE:
-          this.listeners[event].push(callback);
-          break;
+DataStorage.addListener = (events, callback) => {
+  const eventsArray = Array.isArray(events) ? events : [events];
 
-        default:
-          // eslint-disable-next-line no-console
-          console.error('Unknown event', event);
-      }
-    });
-  }
-
-  dispatchEvent(event, data) {
-    console.log('dispatchEvent', event, data);
-
+  eventsArray.forEach((event) => {
     switch (event) {
       case STORAGE_EVENTS.ADD:
       case STORAGE_EVENTS.REMOVE:
-        this.listeners[event].forEach((callback) => callback(data));
+        DataStorage.listeners[event].push(callback);
         break;
 
       default:
         // eslint-disable-next-line no-console
         console.error('Unknown event', event);
     }
+  });
+};
+
+DataStorage.dispatchEvent = (event, data) => {
+  console.log('dispatchEvent', event, data);
+
+  switch (event) {
+    case STORAGE_EVENTS.ADD:
+    case STORAGE_EVENTS.REMOVE:
+      DataStorage.listeners[event].forEach((callback) => callback(data));
+      break;
+
+    default:
+      // eslint-disable-next-line no-console
+      console.error('Unknown event', event);
   }
-}
+};
 
 module.exports = DataStorage;
