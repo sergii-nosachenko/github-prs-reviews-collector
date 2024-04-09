@@ -1,3 +1,5 @@
+const { STORAGE_EVENTS } = require('../constants');
+
 /**
  * {
  *   [taskSlug]: {
@@ -10,6 +12,10 @@
 class DataStorage {
   constructor() {
     this.storage = window.localStorage;
+    this.listeners = {
+      [STORAGE_EVENTS.ADD]: [],
+      [STORAGE_EVENTS.REMOVE]: [],
+    };
   }
 
   getRecord(key) {
@@ -18,10 +24,14 @@ class DataStorage {
 
   setRecord(key, value) {
     this.storage.setItem(key, value);
+
+    this.dispatchEvent(STORAGE_EVENTS.ADD, { taskSlug: key, reviews: value });
   }
 
   removeRecord(key) {
     this.storage.removeItem(key);
+
+    this.dispatchEvent(STORAGE_EVENTS.REMOVE, { taskSlug: key });
   }
 
   clearStorage() {
@@ -64,6 +74,36 @@ class DataStorage {
       this.removeRecord(taskSlug);
     } else {
       this.setRecord(taskSlug, JSON.stringify(storageData));
+    }
+  }
+
+  addListener(events, callback) {
+    const eventsArray = Array.isArray(events) ? events : [events];
+
+    eventsArray.forEach((event) => {
+      switch (event) {
+        case STORAGE_EVENTS.ADD:
+        case STORAGE_EVENTS.REMOVE:
+          this.listeners[event].push(callback);
+          break;
+
+        default:
+          // eslint-disable-next-line no-console
+          console.error('Unknown event', event);
+      }
+    });
+  }
+
+  dispatchEvent(event, data) {
+    switch (event) {
+      case STORAGE_EVENTS.ADD:
+      case STORAGE_EVENTS.REMOVE:
+        this.listeners[event].forEach((callback) => callback(data));
+        break;
+
+      default:
+        // eslint-disable-next-line no-console
+        console.error('Unknown event', event);
     }
   }
 }

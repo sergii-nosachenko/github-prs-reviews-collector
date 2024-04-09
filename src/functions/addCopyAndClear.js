@@ -3,7 +3,7 @@ const DataStorage = require('../classes/Storage.class');
 const GHPage = require('../classes/GHPage.class');
 const { getTaskSlug } = require('../helpers');
 const HeaderItem = require('../classes/HeaderItem.class');
-const { COPY_TO_CLIPBOARD_BTN_CLASS, CLEAR_ALL_REVIEWS_BTN_CLASS } = require('../constants');
+const { COPY_TO_CLIPBOARD_BTN_CLASS, CLEAR_ALL_REVIEWS_BTN_CLASS, STORAGE_EVENTS } = require('../constants');
 
 function addCopyAndClear() {
   const page = new GHPage();
@@ -38,6 +38,22 @@ function addCopyAndClear() {
       });
 
       navigator.clipboard.writeText(textToCopy);
+    });
+
+    storage.addListener([
+      STORAGE_EVENTS.ADD,
+      STORAGE_EVENTS.REMOVE,
+    ], (data) => {
+      const { taskSlug: storageTaskSlug } = data;
+
+      if (taskSlug !== storageTaskSlug) {
+        return;
+      }
+
+      const updatedRecords = storage.getData(taskSlug);
+      const updatedReviewsCount = PRs.reduce((acc, pr) => acc + updatedRecords[pr].length, 0);
+
+      copyToClipboardBtn.updateLabel(`Copy to clipboard (${updatedReviewsCount})`);
     });
   }
 

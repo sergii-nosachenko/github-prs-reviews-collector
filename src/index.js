@@ -16,6 +16,7 @@ $(() => {
         break;
 
       case /\/mate-academy\/[^/]+\/pulls/.test(pageUrl):
+        addCopyAndClear();
         showReviewsAdded();
         break;
 
