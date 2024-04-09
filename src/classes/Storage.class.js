@@ -95,6 +95,8 @@ class DataStorage {
   }
 
   dispatchEvent(event, data) {
+    console.log('dispatchEvent', event, data);
+
     switch (event) {
       case STORAGE_EVENTS.ADD:
       case STORAGE_EVENTS.REMOVE:

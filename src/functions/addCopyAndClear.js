@@ -44,6 +44,8 @@ function addCopyAndClear() {
       STORAGE_EVENTS.ADD,
       STORAGE_EVENTS.REMOVE,
     ], (data) => {
+      console.log('storage event fired', data);
+
       const { taskSlug: storageTaskSlug } = data;
 
       if (taskSlug !== storageTaskSlug) {
