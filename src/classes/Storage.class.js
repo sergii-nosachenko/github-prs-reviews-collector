@@ -25,13 +25,26 @@ class DataStorage {
   setRecord(key, value) {
     this.storage.setItem(key, value);
 
-    DataStorage.dispatchEvent(STORAGE_EVENTS.ADD, { taskSlug: key, reviews: JSON.parse(value) });
+    DataStorage.dispatchEvent(
+      STORAGE_EVENTS.ADD,
+      {
+        event: STORAGE_EVENTS.ADD,
+        taskSlug: key,
+        reviews: JSON.parse(value),
+      },
+    );
   }
 
   removeRecord(key) {
     this.storage.removeItem(key);
 
-    DataStorage.dispatchEvent(STORAGE_EVENTS.REMOVE, { taskSlug: key });
+    DataStorage.dispatchEvent(
+      STORAGE_EVENTS.REMOVE,
+      {
+        event: STORAGE_EVENTS.REMOVE,
+        taskSlug: key,
+      },
+    );
   }
 
   clearStorage() {

@@ -52,8 +52,13 @@ function addCopyAndClear() {
         return;
       }
 
-      const updatedRecords = storage.getData(taskSlug);
-      const updatedReviewsCount = PRs.reduce((acc, pr) => acc + updatedRecords[pr].length, 0);
+      let updatedReviewsCount = 0;
+
+      if (data.event === STORAGE_EVENTS.ADD) {
+        updatedReviewsCount = Object
+          .values(data.reviews)
+          .reduce((acc, reviews) => acc + reviews.length, 0);
+      }
 
       console.log('updatedReviewsCount', updatedReviewsCount);
 
