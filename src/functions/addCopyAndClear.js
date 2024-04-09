@@ -40,7 +40,7 @@ function addCopyAndClear() {
       navigator.clipboard.writeText(textToCopy);
     });
 
-    storage.addListener([
+    DataStorage.addListener([
       STORAGE_EVENTS.ADD,
       STORAGE_EVENTS.REMOVE,
     ], (data) => {
